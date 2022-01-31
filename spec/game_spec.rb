@@ -1,6 +1,28 @@
-require_relative '../game'
+require_relative '../app/game'
 
 RSpec.describe Game do
+  describe '#initialize' do
+    let(:game) { Game.new(5) }
+    let(:words) { game.reference_words }
+    let(:solution) { game.solution }
+
+    it 'initializes a reference words array' do
+      expect(words).to be_kind_of(Array)
+    end
+
+    it 'reference words is the right size' do
+      expect(words.size).to be > 9000
+    end
+
+    it 'initializes a solution word' do
+      expect(solution).to be_kind_of(String)
+    end
+
+    it 'solution word is the right size' do
+      expect(solution.size).to eq 5
+    end
+  end
+  
   describe '#reduce_choice_by' do
     let(:game) { Game.new(5) }
     let(:guess_1) { 'about' }
@@ -18,17 +40,5 @@ RSpec.describe Game do
       game.reduce_choices_by(guess_2)
       expect(game.choices).to eq(choices_2)
     end
-
-    it 'gets the solution words array' do
-      words = game.solution_words
-      expect(words).to be_kind_of(Array)
-      expect(words.size).to be > 1000
-    end
-
-    it 'gets the reference words array' do
-      words = game.reference_words
-      expect(words).to be_kind_of(Array)
-      expect(words.size).to be > 9000
-    end
-  end  
+  end
 end
