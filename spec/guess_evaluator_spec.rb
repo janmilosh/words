@@ -22,8 +22,8 @@ RSpec.describe GuessEvaluator do
       expect(with_good_guess.evaluate).to eq table_line
     end
 
-    it 'sends an invalid message if word is invalid' do
-      expect(with_bad_guess.evaluate).to eq 'Invalid word, please try again.'
+    it 'returns false if word is invalid' do
+      expect(with_bad_guess.evaluate).to be false
     end
   end
 end

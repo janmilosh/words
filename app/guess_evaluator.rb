@@ -20,9 +20,11 @@ class GuessEvaluator
     table_line = ""
     s = @solution.split('')
     g = @guess.split('')
-    s.each_with_index do |e, i|
+    s.size.times do |i|
       if g[i] == s[i]
         table_line += correct(g[i])
+        s[i] = nil
+        g[i] = nil
       elsif s.include?(g[i])
         table_line += in_word(g[i])
       else
