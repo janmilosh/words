@@ -26,8 +26,9 @@ class Game
   
   def run
     guess_table = []
+    valid_guesses = 0
     puts
-    (@wordsize + 1).times do |i|
+    while valid_guesses < (@wordsize + 1) do
       puts 'Input a word or press "q" to quit:'
       guess = gets.chomp.downcase
       return if guess == "q"
@@ -36,6 +37,7 @@ class Game
         guess_table << table_line
         guess_table.each { |guess| puts guess }
         reduce_choices_by(guess)
+        valid_guesses += 1
       else
         puts "#{ guess } is invalid, try again."
       end
