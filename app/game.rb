@@ -10,18 +10,8 @@ class Game
     @wordsize = wordsize
     @reference_words = words.reference_words
     @solution = words.solution
-    @choices = ('a'..'z').to_a
-  end
-
-  def display_choices
-    puts @choices.join(" ").upcase
-    puts
-  end
-
-  def reduce_choices_by(guess)
-    @wordsize.times do |i|
-      @choices.delete(guess[i-1])
-    end
+    @choices_reference = ('a'..'z').to_a
+    @choices = ('a'..'z').to_a.map { |c| c.upcase }
   end
   
   def run
@@ -32,16 +22,34 @@ class Game
       puts 'Input a word or press "q" to quit:'
       guess = gets.chomp.downcase
       return if guess == "q"
-      table_line = GuessEvaluator.new(guess, @reference_words, @solution).evaluate
+      @guess_evaluator = GuessEvaluator.new(guess, @reference_words, @solution)
+      table_line = @guess_evaluator.evaluate
       if table_line
         guess_table << table_line
         guess_table.each { |guess| puts guess }
-        reduce_choices_by(guess)
+        update_choices_colors
         valid_guesses += 1
       else
         puts "#{ guess } is invalid, try again."
       end
       display_choices
+      if @guess_evaluator.game_over
+        puts "You got it in #{valid_guesses} guesses!"
+        return
+      end
     end
+  end
+
+  def update_choices_colors
+    @guess_evaluator.choice_color_updates.each do |k, v|
+      i = @choices_reference.index(k)
+      @choices[i] = v
+    end
+  end
+
+  def display_choices
+    puts
+    puts @choices.join(' ')
+    puts
   end
 end

@@ -1,12 +1,15 @@
 require_relative './words'
 
 class GuessEvaluator
-  attr_reader :guess, :reference_words
+  attr_reader :guess, :reference_words, :choice_color_updates, :game_over
   
   def initialize(guess, reference_words, solution)
     @guess = guess
     @reference_words = reference_words
     @solution = solution
+    @wordsize = solution.size
+    @choice_color_updates = {}
+    @game_over = false
   end
 
   def evaluate
@@ -25,7 +28,6 @@ class GuessEvaluator
   def prepare_evaluation_arrays
     @s = @solution.split('')
     @g = @guess.split('')
-    @wordsize = @s.size
     @table_array = []
     @wordsize.times { |i| @table_array[i] = nil }
   end
@@ -34,8 +36,10 @@ class GuessEvaluator
     @wordsize.times do |i|
       if @g[i] == @s[i] && @s[i] != nil
         @table_array[i] = correct(@g[i])
+        @choice_color_updates[@g[i]] = correct(@g[i])
         @s[i] = nil
         @g[i] = nil
+        @game_over = true if @s.uniq.size == 1
       end
     end
   end
@@ -44,6 +48,7 @@ class GuessEvaluator
     @wordsize.times do |i|
       if @g[i] != nil && @s.include?(@g[i])
         @table_array[i] = in_word(@g[i])
+        @choice_color_updates[@g[i]] = in_word(@g[i])
         @s[@s.index(@g[i])] = nil
         @g[i] = nil
       end
@@ -54,6 +59,7 @@ class GuessEvaluator
     @wordsize.times do |i|
       if @g[i] != nil
         @table_array[i] = wrong(@g[i])
+        @choice_color_updates[@g[i]] = wrong(@g[i])
       end
     end
   end
