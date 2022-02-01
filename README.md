@@ -11,3 +11,4 @@ To play game, run the script:
 ```
 ruby ./scripts/run.rb
 ```
+![example game play](example.png)
