@@ -43,8 +43,12 @@ class Game
   def update_choices_colors
     @guess_evaluator.choice_color_updates.each do |k, v|
       i = @choices_reference.index(k)
-      @choices[i] = v
+      @choices[i] = v if choice_not_already_correct(i)
     end
+  end
+
+  def choice_not_already_correct(index)
+    !@choices[index].include?('42m')
   end
 
   def display_choices
