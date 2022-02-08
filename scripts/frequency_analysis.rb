@@ -31,11 +31,15 @@ standard_frequencies = {
 }
 
 a = ['e','t','a','o','i','n','s','r','h','d','l','u','c','m','f','y','w','g','p','b','v','k','x','q','j','z']
-used_words = ['knoll', 'sugar', 'whack', 'mount', 'perky', 'could', 'wrung', 'light', 'moist', 'shard', 'pleat', 'aloft', 'skill']
+used_words = ['knoll', 'sugar', 'whack', 'mount', 'perky', 'could', 'wrung', 'light', 'moist', 'shard', 'pleat', 'aloft', 'skill',
+              'elder', 'frame']
 solution_letters=$solution.join('').split('')
 solution_count = solution_letters.size
 used_letters = used_words.join('').split('')
 used_count = used_letters.size
+
+sol_hash = {}
+used_hash = {}
 
 CSV.open('scripts/letter_frequency.csv', 'w') do |csv|
   csv << ['letter', 'standard','all','used']
@@ -47,5 +51,22 @@ CSV.open('scripts/letter_frequency.csv', 'w') do |csv|
     percent_used = u * 100.0 / used_count
     csv << [l.upcase, percent_standard, percent_sol, percent_used]
     puts "#{l.upcase}: #{c} #{standard_frequencies[l.to_sym]} %0.2f %0.2f" % [percent_sol, percent_used]
+
+    sol_hash[l] = percent_sol
+    used_hash[l] = percent_used
   end
+end
+
+puts
+puts
+puts "Solution letter frequency:"
+sol_sorted = sol_hash.sort { |l, r| l[1]<=>r[1] }.reverse
+sol_sorted.each do |el|
+  puts "#{el[0].upcase}   %0.2f" % [el[1]]
+end
+puts   
+puts "Used letter frequency:"
+used_sorted = used_hash.sort { |l, r| l[1]<=>r[1] }.reverse
+used_sorted.each do |el|
+  puts "#{el[0].upcase}   %0.2f" % [el[1]]
 end
