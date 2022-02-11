@@ -32,7 +32,7 @@ standard_frequencies = {
 
 a = ['e','t','a','o','i','n','s','r','h','d','l','u','c','m','f','y','w','g','p','b','v','k','x','q','j','z']
 used_words = ['knoll', 'sugar', 'whack', 'mount', 'perky', 'could', 'wrung', 'light', 'moist', 'shard', 'pleat', 'aloft', 'skill',
-              'elder', 'frame']
+              'elder', 'frame', 'humor', 'pause', 'ulcer']
 solution_letters=$solution.join('').split('')
 solution_count = solution_letters.size
 used_letters = used_words.join('').split('')
